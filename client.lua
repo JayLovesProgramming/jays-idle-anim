@@ -25,7 +25,7 @@ local function playRandomIdleAnimation()
         if config.debug then
           print("Playing idle animation:", randomisedAnim)
         end
-        Wait(10000)
+        Wait(6000)
         cancelEmote()
     end
 end
