@@ -1,6 +1,6 @@
 return {
   debug = false,
-  idleTimeout = 3000,
+  idleTimeout = 13000,
   randomIdleAnimations = {
     "idle3",
     "idle4",
