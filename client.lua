@@ -2,7 +2,7 @@ local config = require "config"
 local isIdlePlaying = false
 local lastActionTime = 0
 local lastIdleAnimation = ""
-
+local idleTimeout = config.idleTimeout
 local function cancelEmote()
     if exports.scully_emotemenu:isInEmote() then
         exports.scully_emotemenu:cancelEmote()
@@ -25,7 +25,7 @@ local function playRandomIdleAnimation()
         if config.debug then
           print("Playing idle animation:", randomisedAnim)
         end
-        Wait(6000)
+        Wait(idleTimeout-4000)
         cancelEmote()
     end
 end
@@ -33,7 +33,7 @@ end
 local function handleKeybindRelease()
     if IsPedWalking(cache.ped) then
       lastActionTime = GetGameTimer()
-    elseif GetGameTimer() - lastActionTime > config.idleTimeout  then
+    elseif GetGameTimer() - lastActionTime > idleTimeout  then
       cancelEmote()
       if config.debug then
         print("Cancelled emote")
@@ -49,19 +49,19 @@ CreateThread(function()
         onReleased = handleKeybindRelease
     })
     while true do
-        Wait(1000)
-        if config.debug then
-          print("Is in emote?", exports.scully_emotemenu:isInEmote())
-          Wait(2000)
-          print("Is in vehicle?", GetVehiclePedIsIn(cache.ped, false))
-          Wait(2000)
-          print("Does entity exist?", DoesEntityExist(cache.ped))
-          Wait(2000)
-          print("Is ped still??", IsPedStill(cache.ped))
-          Wait(2000)
-        end
+        Wait(2000)
+        -- if config.debug then
+        --   print("Is in emote?", exports.scully_emotemenu:isInEmote())
+        --   Wait(2000)
+        --   print("Is in vehicle?", GetVehiclePedIsIn(cache.ped, false))
+        --   Wait(2000)
+        --   print("Does entity exist?", DoesEntityExist(cache.ped))
+        --   Wait(2000)
+        --   print("Is ped still??", IsPedStill(cache.ped))
+        --   Wait(2000)
+        -- end
         if DoesEntityExist(cache.ped) and GetVehiclePedIsIn(cache.ped, false) == 0  and not IsEntityDead(cache.ped) and IsPedStill(cache.ped) and not exports.scully_emotemenu:isInEmote() then
-            if GetGameTimer() - lastActionTime > config.idleTimeout  then
+            if GetGameTimer() - lastActionTime > idleTimeout  then
               if config.debug then
                 print("Triggered play animation function")
               end
