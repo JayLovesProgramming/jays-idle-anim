@@ -1,7 +1,8 @@
 return {
-  debug = true,
-  idleTimeout = 12000,
-  usingQB = true, -- Set to false if you are not using qb-core or qbx_core
+  debug = false,
+  emoteMenu = "scully",  -- scully and rpemotes (THESE ARE THE ONLY OPTIONS FOR NOW)
+  idleTimeout = 10000,
+  usingQB = true,
   randomIdleAnimations = {
   "idle3",
   "idle4",
