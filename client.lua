@@ -25,7 +25,9 @@ local function playRandomIdleAnimation()
         exports.scully_emotemenu:playEmoteByCommand(randomisedAnim)
         isIdlePlaying = true
         lastIdleAnimation = randomisedAnim
-        print("Playing idle animation:", randomisedAnim)
+        if config.debug then
+            print("Playing idle animation:", randomisedAnim)
+        end
     end
 end
 
@@ -60,8 +62,10 @@ RegisterNetEvent("QBCore:Client:OnPlayerLoaded", function()
           and not exports.scully_emotemenu:isInEmote() 
           and not IsPedWalking(cache.ped) then
               if GetGameTimer() - lastActionTime > idleTimeout  then
-                  print("Playing IDLE Anim")
-                  playRandomIdleAnimation()
+                if config.debug then
+                    print("Playing IDLE Anim")
+                end
+              playRandomIdleAnimation()
               end
           end
       end
@@ -85,9 +89,11 @@ else
           and not exports.scully_emotemenu:isInEmote() 
           and not IsPedWalking(cache.ped) then
               if GetGameTimer() - lastActionTime > idleTimeout  then
+                if config.debug then
                   print("Playing IDLE Anim")
                   playRandomIdleAnimation()
               end
+            end
           end
       end
   end)
