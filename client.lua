@@ -1,4 +1,3 @@
-local config = require "config"
 local lastIdleAnimation = nil
 local isIdlePlaying = false
 local lastActionTime = 0
