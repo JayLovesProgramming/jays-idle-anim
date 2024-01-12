@@ -91,6 +91,10 @@ CreateThread(function()
             CreateThread(function()
                 while true do
                     Wait(idleTimeout)
+                    if GetVehiclePedIsIn(PlayerPedId(), false) ~= 0 then
+                        Wait(idleTimeout * 2)
+                    end
+                    
                         if GetGameTimer() - lastActionTime > idleTimeout and simpleCheck() then
                             -- if config.debug then
                             --     print("[DEBUG] Trying to play animation")
@@ -118,6 +122,9 @@ CreateThread(function()
             -- ADD UR LOGIC HERE TO CHECK IF PLAYER IS SPAWNED IN.
             while true do
                 Wait(idleTimeout)
+                if GetVehiclePedIsIn(PlayerPedId(), false) ~= 0 then
+                    Wait(idleTimeout * 2)
+                end
                     if GetGameTimer() - lastActionTime > idleTimeout and simpleCheck() then
                         if config.debug then
                             print("[DEBUG] Trying to play animation")
