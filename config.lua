@@ -3,12 +3,12 @@ config = {
   usingQB = true, -- Set to true if you are using QB/QBX or if you 
   
   emoteMenu = "scully",  -- scully and rpemotes (THESE ARE THE ONLY OPTIONS FOR NOW)
-  idleTimeout = 3500, -- Cooldown for the idle animation
+  idleTimeout = 5000, -- Cooldown for the idle animation
 
   useSingleEmote = false, -- Set to true if you want to use only one animation and not a list of random ones
-  singleEmote = "idle4", -- Adjust this as you like and if useSingleEmote is set to true 
+  singleEmote = "idle4", -- Adjust this if you like and useSingleEmote is set to true 
 
-  randomIdleAnimations = { -- Adjust this as you like and if useSingleEmote is set to false 
+  randomIdleAnimations = {
     "idle3",
     "idle4",
     "idle7", 
