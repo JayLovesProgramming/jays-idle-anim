@@ -1,3 +1,4 @@
+local config = config
 local lastIdleAnimation = nil
 local isIdlePlaying = false
 local lastActionTime = 0
@@ -21,6 +22,16 @@ local function cancelEmote()
 end
 
 local function playRandomIdleAnimation()
+    if config.useSingleEmote then
+        if config.debug then
+            print("[DEBUG] Playing idle animation:", config.singleEmote)
+        end
+        if config.emoteMenu == "rpemotes" then
+            exports["rpemotes"]:EmoteCommandStart(config.singleEmote)
+        elseif config.emoteMenu == "scully" then
+            exports.scully_emotemenu:playEmoteByCommand(config.singleEmote)
+        end
+    else
     local availableAnimations = {}
     for _, anim in ipairs(randomIdleAnim) do
         if anim ~= lastIdleAnimation then
@@ -30,6 +41,9 @@ local function playRandomIdleAnimation()
     if #availableAnimations > 0 then
         local randomIndex = 1 + math.floor(#availableAnimations * math.random())
         local randomisedAnim = availableAnimations[randomIndex]
+        if config.debug then
+            print("[DEBUG] Playing idle animation:", randomisedAnim)
+        end
         if config.emoteMenu == "rpemotes" then
             exports["rpemotes"]:EmoteCommandStart(randomisedAnim)
         elseif config.emoteMenu == "scully" then
@@ -37,8 +51,6 @@ local function playRandomIdleAnimation()
         end
         isIdlePlaying = true
         lastIdleAnimation = randomisedAnim
-        if config.debug then
-            print("[DEBUG] Playing idle animation:", randomisedAnim)
         end
     end
 end
@@ -54,6 +66,18 @@ local function handleKeybindRelease()
     end
 end
 
+local function simpleCheck()
+    if DoesEntityExist(PlayerPedId())
+    and IsPedStill(PlayerPedId()) 
+    and not GetVehiclePedIsIn(PlayerPedId(), false) ~= 0 
+    and not IsEntityDead(PlayerPedId()) 
+    and not IsPedWalking(PlayerPedId()) then    
+        return true 
+    else
+        return false
+    end
+end
+
 CreateThread(function()
     if config.usingQB then 
         if LocalPlayer.state.isLoggedIn then
@@ -64,39 +88,34 @@ CreateThread(function()
             CreateThread(function()
                 while true do
                     Wait(idleTimeout)
-                    if DoesEntityExist(PlayerPedId())
-                    and not GetVehiclePedIsIn(PlayerPedId(), false) ~= 0 
-                    and not IsEntityDead(PlayerPedId()) 
-                    and IsPedStill(PlayerPedId()) 
-                    and not IsPedWalking(PlayerPedId()) then
-                        if GetGameTimer() - lastActionTime > idleTimeout  then
-                            if config.debug then
-                                print("[DEBUG] Trying to play animation")
-                            end
+                        if GetGameTimer() - lastActionTime > idleTimeout and simpleCheck() then
+                            -- if config.debug then
+                            --     print("[DEBUG] Trying to play animation")
+                            -- end
                             if config.emoteMenu == "rpemotes" then
                                 if not exports["rpemotes"]:IsPlayerInAnim() then
                                     playRandomIdleAnimation()
                                 end
                             elseif config.emoteMenu == "scully" then
+                                if config.debug then
+                                    print("[DEBUG] Is in animation? =  ",exports.scully_emotemenu:isInEmote())
+                                end
                                 if not exports.scully_emotemenu:isInEmote() then
+
                                     playRandomIdleAnimation()
                                 end
                             end
                         end
                     end
-                end
             end)
         end
     else
         CreateThread(function()
+            Wait(20000)
+            -- ADD UR LOGIC HERE TO CHECK IF PLAYER IS SPAWNED IN.
             while true do
                 Wait(idleTimeout)
-                if DoesEntityExist(PlayerPedId())
-                and not GetVehiclePedIsIn(PlayerPedId(), false) ~= 0 
-                and not IsEntityDead(PlayerPedId()) 
-                and IsPedStill(PlayerPedId()) 
-                and not IsPedWalking(PlayerPedId()) then
-                    if GetGameTimer() - lastActionTime > idleTimeout  then
+                    if GetGameTimer() - lastActionTime > idleTimeout and simpleCheck() then
                         if config.debug then
                             print("[DEBUG] Trying to play animation")
                         end
@@ -111,7 +130,6 @@ CreateThread(function()
                         end
                     end
                 end
-            end
         end)
     end
 end)
