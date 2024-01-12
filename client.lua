@@ -70,15 +70,20 @@ local function simpleCheck()
     if DoesEntityExist(PlayerPedId())
     and IsPedStill(PlayerPedId()) 
     and GetVehiclePedIsIn(PlayerPedId(), false) == 0 
+    and not IsPedArmed(PlayerPedId(), 1)
+    and not IsPedArmed(PlayerPedId(), 2)
+    and not IsPedArmed(PlayerPedId(), 4)
     and not IsEntityDead(PlayerPedId()) 
-    and not IsPedWalking(PlayerPedId()) then    
-        return true 
-    else
-        if config.debug then
-            print("[DEBUG] Failed Simple Check")
+    and not IsPedWalking(PlayerPedId()) then
+        local _, currentAnim = GetEntityAnimCurrentTime(PlayerPedId(), 0, 2)
+        if not currentAnim or currentAnim <= 0.0 then
+            return true
         end
-        return false
     end
+    if config.debug then
+        print("[DEBUG] Failed Simple Check")
+    end
+    return false
 end
 
 CreateThread(function()
@@ -94,7 +99,6 @@ CreateThread(function()
                     if GetVehiclePedIsIn(PlayerPedId(), false) ~= 0 then
                         Wait(idleTimeout * 2)
                     end
-                    
                         if GetGameTimer() - lastActionTime > idleTimeout and simpleCheck() then
                             -- if config.debug then
                             --     print("[DEBUG] Trying to play animation")
@@ -121,11 +125,12 @@ CreateThread(function()
             Wait(20000)
             -- ADD UR LOGIC HERE TO CHECK IF PLAYER IS SPAWNED IN.
             while true do
-                Wait(idleTimeout)
+                Wait(1000)
                 if GetVehiclePedIsIn(PlayerPedId(), false) ~= 0 then
                     Wait(idleTimeout * 2)
                 end
                     if GetGameTimer() - lastActionTime > idleTimeout and simpleCheck() then
+                        lastActionTime = GetGameTimer()
                         if config.debug then
                             print("[DEBUG] Trying to play animation")
                         end
@@ -143,7 +148,6 @@ CreateThread(function()
         end)
     end
 end)
-
 -- Command --
 RegisterCommand('cancelidleanimW', function()
     handleKeybindRelease()
