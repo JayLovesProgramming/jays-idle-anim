@@ -117,15 +117,23 @@ CreateThread(function()
 end)
 
 -- Command --
-RegisterCommand('cancelidleanim', function()
+RegisterCommand('cancelidleanimW', function()
     handleKeybindRelease()
 end)
-
+RegisterCommand('cancelidleanimA', function()
+    handleKeybindRelease()
+end)
+RegisterCommand('cancelidleanimS', function()
+    handleKeybindRelease()
+end)
+RegisterCommand('cancelidleanimD', function()
+    handleKeybindRelease()
+end)
 -- Key Mappings --
-RegisterKeyMapping('cancelidleanim', 'Cancel Idle Animation (W)', 'keyboard', 'w')
-RegisterKeyMapping('cancelidleanim', 'Cancel Idle Animation (A)', 'keyboard', 'a')
-RegisterKeyMapping('cancelidleanim', 'Cancel Idle Animation (S)', 'keyboard', 's')
-RegisterKeyMapping('cancelidleanim', 'Cancel Idle Animation (D)', 'keyboard', 'd')
+RegisterKeyMapping('cancelidleanimW', 'Cancel Idle Animation (W)', 'keyboard', 'w')
+RegisterKeyMapping('cancelidleanimA', 'Cancel Idle Animation (A)', 'keyboard', 'a')
+RegisterKeyMapping('cancelidleanimS', 'Cancel Idle Animation (S)', 'keyboard', 's')
+RegisterKeyMapping('cancelidleanimD', 'Cancel Idle Animation (D)', 'keyboard', 'd')
 
 -- When the resource restarts >> cancel emote pretty please --
 AddEventHandler("onResourceStop", function(resourceName) -- Used for when the resource is restarted while in game
