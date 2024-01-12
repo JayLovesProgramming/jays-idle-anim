@@ -7,7 +7,7 @@ local idleTimeout = config.idleTimeout
 
 local function cancelEmote()
     if config.debug then
-        print("[DEBUG] Cancelled emote")
+        print("[DEBUG] Cancelled EMOTE")
     end
     if config.emoteMenu == "rpemotes" then
         if exports["rpemotes"]:IsPlayerInAnim() then
@@ -69,11 +69,14 @@ end
 local function simpleCheck()
     if DoesEntityExist(PlayerPedId())
     and IsPedStill(PlayerPedId()) 
-    and not GetVehiclePedIsIn(PlayerPedId(), false) ~= 0 
+    and GetVehiclePedIsIn(PlayerPedId(), false) == 0 
     and not IsEntityDead(PlayerPedId()) 
     and not IsPedWalking(PlayerPedId()) then    
         return true 
     else
+        if config.debug then
+            print("[DEBUG] Failed Simple Check")
+        end
         return false
     end
 end
