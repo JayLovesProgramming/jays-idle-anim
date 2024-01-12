@@ -7,7 +7,7 @@ local idleTimeout = config.idleTimeout
 
 local function cancelEmote()
     if config.debug then
-        print("[DEBUG] Cancelled EMOTE")
+        print("[DEBUG] Cancelled emote")
     end
     if config.emoteMenu == "rpemotes" then
         if exports["rpemotes"]:IsPlayerInAnim() then
